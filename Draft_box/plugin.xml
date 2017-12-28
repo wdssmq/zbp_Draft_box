@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin version="php">
+<id>Draft_box</id>
+<name>草稿箱</name>
+<url>https://app.zblogcn.com/?id=585</url>
+<note>自动保存正在编辑的文章到草稿箱</note>
+<description>正在编辑的文章会自动保存到草稿箱，以备需要是恢复</description>
+<path></path>
+<include>include.php</include>
+<level>1</level>
+<author>
+  <name>沉冰浮水</name>
+  <email>wdssmq@qq.com</email>
+  <url>http://www.wdssmq.com</url>
+</author>
+<source>
+  <name></name>
+  <email></email>
+  <url></url>
+</source>
+<adapted>150101</adapted>
+<version>1.9</version>
+<pubdate>2014-11-17</pubdate>
+<modified>2017-12-22</modified>
+<price>0</price>
+<phpver>5.3</phpver>
+<advanced>
+  <dependency></dependency>
+  <rewritefunctions></rewritefunctions>
+  <existsfunctions></existsfunctions>
+  <conflict></conflict>
+</advanced>
+<sidebars>
+  <sidebar1></sidebar1>
+  <sidebar2></sidebar2>
+  <sidebar3></sidebar3>
+  <sidebar4></sidebar4>
+  <sidebar5></sidebar5>
+</sidebars>
+</plugin>
