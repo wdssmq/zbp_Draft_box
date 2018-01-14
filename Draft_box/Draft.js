@@ -1,6 +1,21 @@
-/**
- * Created by Administrator on 14-11-18.
- */
+
+Date.prototype.Format = function (fmt) { //author: meizz
+  var o = {
+    "M+": this.getMonth() + 1, //月份
+    "d+": this.getDate(), //日
+    "h+": this.getHours(), //小时
+    "m+": this.getMinutes(), //分
+    "s+": this.getSeconds(), //秒
+    "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+    "S": this.getMilliseconds() //毫秒
+  };
+  if (/(y+)/.test(fmt))
+    fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+  for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt))
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+  return fmt;
+}
 function autosave() { //异步提交文章数据
   //alert('xss1');
   //ajax Begin
@@ -27,14 +42,14 @@ function autosave() { //异步提交文章数据
       return;
     }
 
-    myDate = new Date();
-    var mytime = myDate.getFullYear() + "-" + checkTime(myDate.getMonth()) + "-" + checkTime(myDate.getDate()) + " " + checkTime(myDate.getHours()) + ":" + checkTime(myDate.getMinutes()) + ":" + checkTime(myDate.getSeconds());
-    $("#lasttime").html('上一次保存时间: <a href="javascript:void(0)" onclick="Draft_box_list_slide()" >' + mytime + "</a>");
+    var time = new Date().Format("yyyy-MM-dd hh:mm:ss");
+    $("#lasttime").html('上一次保存时间: <a href="javascript:void(0)" onclick="Draft_box_list_slide()" >' + time + "</a>");
 
   }, 'json'); //ajax End
 }
 
 /****************************/
+// var start = 7;
 var start = 47;
 var loop = start;
 var step = -1;
@@ -51,13 +66,6 @@ function count() {
   if (start < 0)
     start = loop;
   setTimeout("count()", 1000);
-}
-
-function checkTime(i) {
-  if (i < 10) {
-    i = "0" + i
-  }
-  return i
 }
 
 function Draft_box_list_slide() {

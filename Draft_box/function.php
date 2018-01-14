@@ -1,7 +1,6 @@
 <?php
 function Draft_box_list()
 {
-  // var_dump(1);
   global $zbp;
   $p               = new Pagebar($zbp->host . '{&page=%page%}{&search=%search%}', false);
   $p->PageCount    = 15; //每页显示数量
@@ -23,16 +22,12 @@ function Draft_box_list()
     $array2             = array();
     $array2['ID']       = $a['ID'];
     $array2['PostTime'] = $a['PostTime'];
-    $array2['Title']    = strlen($a['Title']) <= 24 ? urlencode($a['Title']) : urlencode(substr($a['Title'], 0, 24) . '......');
+    $array2['Title']    = strlen($a['Title']) <= 24 ? urlencode($a['Title']) : urlencode(SubStrUTF8($a['Title'], 24) . '...');
     $tempcontent        = TransferHTML($a['Content'], '[nohtml]');
-    $array2['Content']  = strlen($tempcontent) <= 40 ? urlencode($tempcontent) : mb_substr($tempcontent, 0, 40,"utf-8") . '......';
+    $array2['Content']  = strlen($tempcontent) <= 40 ? urlencode($tempcontent) : urlencode(SubStrUTF8($tempcontent,40)) . '...';
     $list[]             = $array2;
   }
-  // print_r($list);
-  // if (count($list) > 0)
   echo urldecode(json_encode($list));
-  // else
-  // echo '{"msg":"empty"}';
 }
 function Draft_box_get()
 {
