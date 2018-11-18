@@ -1,20 +1,24 @@
 <?php
-if(!isset($zbp)){ exit;}
+if (!isset($zbp)) {
+  exit;
+}
 #注册插件
-RegisterPlugin("Draft_box","ActivePlugin_Draft_box");
+RegisterPlugin("Draft_box", "ActivePlugin_Draft_box");
 
 $GLOBALS['table']['plugin_Draft_box'] = '%pre%plugin_draft_box';
 $GLOBALS['datainfo']['plugin_Draft_box'] = $zbp->datainfo['Post'];
 
-function ActivePlugin_Draft_box() {
-    Add_Filter_Plugin('Filter_Plugin_Edit_Response3','Draft_box_Main');
-    Add_Filter_Plugin('Filter_Plugin_Edit_Response2','Draft_box_txt');
+function ActivePlugin_Draft_box()
+{
+  Add_Filter_Plugin('Filter_Plugin_Edit_Response3', 'Draft_box_Main');
+  Add_Filter_Plugin('Filter_Plugin_Edit_Response2', 'Draft_box_txt');
 }
 
-function Draft_box_Main(){
-    global $zbp;
+function Draft_box_Main()
+{
+  global $zbp;
 
-echo <<<jj
+  echo <<<jj
 <script src="$zbp->host/zb_users/plugin/Draft_box/Draft.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function(){count();});
@@ -26,30 +30,31 @@ jj;
 
 }
 
-function Draft_box_txt(){
-    echo '<div class="ui-draggable" id="DraftList" style="display: none;position: absolute;">Loading</div>';
+function Draft_box_txt()
+{
+  echo '<div class="ui-draggable" id="DraftList" style="display: none;position: absolute;">Loading</div>';
    # echo '<div id="sss" >ssssssss</div>';
 }
-function InstallPlugin_Draft_box() {
-    global $zbp;
-    $zbp->table['plugin_Draft_box'] = 'plugin_draft_box';
+function InstallPlugin_Draft_box()
+{
+  global $zbp;
+  $zbp->table['plugin_Draft_box'] = 'plugin_draft_box';
 
-    $zbp->datainfo['plugin_Draft_box'] = $zbp->datainfo['Post'];
+  $zbp->datainfo['plugin_Draft_box'] = $zbp->datainfo['Post'];
 
 #判断是否已创建，否则新建数据表
-    if(!$zbp->db->ExistTable($GLOBALS['table']['plugin_Draft_box']))
-    {
-        $s = $zbp->db->sql->CreateTable($zbp->table['plugin_Draft_box'],$GLOBALS['datainfo']['plugin_Draft_box']);
-        $zbp->db->QueryMulit($s);
-    }
+  if (!$zbp->db->ExistTable($GLOBALS['table']['plugin_Draft_box'])) {
+    $s = $zbp->db->sql->CreateTable($zbp->table['plugin_Draft_box'], $GLOBALS['datainfo']['plugin_Draft_box']);
+    $zbp->db->QueryMulit($s);
+  }
 }
 InstallPlugin_Draft_box();
 
-function UninstallPlugin_Draft_box() {
-    global $zbp;
-    if($zbp->db->ExistTable($GLOBALS['table']['plugin_Draft_box']))
-    {
-        $s = $zbp->db->sql->DelTable($GLOBALS['table']['plugin_Draft_box']);
-        $zbp->db->QueryMulit($s);
-    }
+function UninstallPlugin_Draft_box()
+{
+  global $zbp;
+  if ($zbp->db->ExistTable($GLOBALS['table']['plugin_Draft_box'])) {
+    $s = $zbp->db->sql->DelTable($GLOBALS['table']['plugin_Draft_box']);
+    $zbp->db->QueryMulit($s);
+  }
 }
