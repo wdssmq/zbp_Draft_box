@@ -2,7 +2,7 @@
 <plugin version="php">
 <id>Draft_box</id>
 <name>草稿箱</name>
-<url>https://app.zblogcn.com/?id=585</url>
+<url>//jq.qq.com/?_wv=1027&amp;k=5sE9rKH</url>
 <note>自动保存正在编辑的文章到草稿箱</note>
 <description>正在编辑的文章会自动保存到草稿箱，以备需要是恢复</description>
 <path></path>
@@ -11,19 +11,19 @@
 <author>
   <name>沉冰浮水</name>
   <email>wdssmq@qq.com</email>
-  <url>http://www.wdssmq.com</url>
+  <url>https://www.wdssmq.com</url>
 </author>
 <source>
   <name></name>
   <email></email>
   <url></url>
 </source>
-<adapted>150101</adapted>
+<adapted>151626</adapted>
 <version>2</version>
 <pubdate>2014-11-17</pubdate>
-<modified>2018-11-10</modified>
+<modified>2019-02-03</modified>
 <price>0</price>
-<phpver>5.3</phpver>
+<phpver>5.4</phpver>
 <advanced>
   <dependency></dependency>
   <rewritefunctions></rewritefunctions>
