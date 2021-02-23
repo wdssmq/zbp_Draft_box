@@ -1,4 +1,4 @@
-Date.prototype.Format = function(fmt) {
+Date.prototype.Format = function (fmt) {
   //author: meizz
   var o = {
     "M+": this.getMonth() + 1, //月份
@@ -7,7 +7,7 @@ Date.prototype.Format = function(fmt) {
     "m+": this.getMinutes(), //分
     "s+": this.getSeconds(), //秒
     "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-    S: this.getMilliseconds() //毫秒
+    S: this.getMilliseconds(), //毫秒
   };
   if (/(y+)/.test(fmt))
     fmt = fmt.replace(
@@ -22,7 +22,7 @@ Date.prototype.Format = function(fmt) {
       );
   return fmt;
 };
-function autosave() {
+function fnAutoSave() {
   //异步提交文章数据
   //alert('xss1');
   //ajax Begin
@@ -43,9 +43,9 @@ function autosave() {
       Intro: $("#editor_intro").val(),
       Content: editor_api.editor.content.get(),
       PostTime: $("#edtDateTime").val(),
-      Template: $("#cmbTemplate").val()
+      Template: $("#cmbTemplate").val(),
     },
-    function(data) {
+    function (data) {
       //var data =$.parsejson(data);
       if (data.id == 0) {
         return;
@@ -63,22 +63,55 @@ function autosave() {
 }
 
 /****************************/
-// var start = 7;
-var start = 47;
-var loop = start;
-var step = -1;
+// const start = 7;
+const start = 60;
+const step = -1;
+let loop = start;
+let lstHash = "";
+console.log(lstHash);
 function count() {
-  // setTimeout(autosave, 500);
-  // return false;
-
-  $("#autosavetime").text(start);
-  if (start == 0 && editor_api.editor.content.get() !== "") {
+  $("#autosavetime").text(loop);
+  if (loop == 0 && editor_api.editor.content.get() !== "") {
     //alert(start);
-    autosave();
+    const curHahs = fnCurHash();
+    console.log(curHahs);
+    if (lstHash != curHahs) {
+      fnAutoSave();
+      lstHash = curHahs;
+    }
   }
-  start += step;
-  if (start < 0) start = loop;
+  loop += step;
+  if (loop < 0) loop = start;
   setTimeout("count()", 1000);
+}
+
+setTimeout(() => {
+  count();
+}, 1300);
+
+function fnHashVal(string) {
+  let hash = 0,
+    i,
+    chr;
+  if (string.length === 0) return hash;
+  for (i = 0; i < string.length; i++) {
+    chr = string.charCodeAt(i);
+    hash = (hash << 5) - hash + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+}
+
+function fnCurHash() {
+  const body = editor_api ? editor_api.editor.content.get() : "";
+  const other = ((arr) => {
+    const aRlt = [];
+    arr.forEach((el) => {
+      aRlt.push($(`#${el}`).val().trim());
+    });
+    return aRlt.join("|");
+  })(["edtTitle", "edtAlias", "edtTag"]);
+  return fnHashVal(body + other);
 }
 
 function Draft_box_list_slide() {
@@ -97,13 +130,13 @@ function Draft_box_list_slide() {
         padding: "10px",
         width: "820px",
         height: "410px",
-        opacity: 0
+        opacity: 0,
       })
       .animate({
         top:
           ($(window).height() - $domDraft.height()) / 2 + $(window).scrollTop(),
         left: ($(window).width() - $domDraft.width()) / 2,
-        opacity: 1
+        opacity: 1,
       })
       .draggable();
   } else {
@@ -118,12 +151,12 @@ function Draft_box_list(page) {
   var c = page + 1;
   $.getJSON(
     bloghost + "zb_users/plugin/Draft_box/main.php?act=list&page=" + b,
-    function(data) {
+    function (data) {
       var str =
         '<p class="editinputname">自动保存的草稿(每页15条)：<button class="dra-btn page" type="button" onclick="Draft_box_list(' +
         c +
         ')">下一页</button>&nbsp;&nbsp;&nbsp;<button onclick="$domDraft.fadeOut();return false;">关闭</button></p><table style="width: 100%;"><tr><td>时间</td><td>文章标题</td><td>内容</td><td>操作</td></tr>';
-      $.each(data, function(i, v) {
+      $.each(data, function (i, v) {
         str +=
           '<tr id="dra' +
           v.ID +
@@ -154,7 +187,7 @@ function Draft_box_list(page) {
       str += "</table>";
       $domDraft.html(str);
       if (data.length === 0) {
-        $(".dra-btn.page").text("已经是最后一页").attr("disabled","disabled");
+        $(".dra-btn.page").text("已经是最后一页").attr("disabled", "disabled");
         return;
       }
     }
@@ -166,7 +199,7 @@ function Draft_box_get(id) {
   //alert('xss1');
   $.getJSON(
     bloghost + "/zb_users/plugin/Draft_box/main.php?act=get&id=" + id,
-    function(data) {
+    function (data) {
       $("#edtType").val(data.Type);
       $("#edtTitle").val(data.Title);
       $("#editor_content").val(data.Content);
@@ -182,8 +215,8 @@ function Draft_box_get(id) {
       $("#edtIslock").val(data.IsLock);
 
       $("#editor_intro").val(data.Intro);
-      setContent(data.Content);
-      start = loop;
+      editor_api.editor.content.put(data.Content);
+      loop = start;
       $domDraft = $("#DraftList");
       $domDraft.fadeOut();
     }
@@ -193,7 +226,7 @@ function Draft_box_get(id) {
 function Draft_box_del(id) {
   $.getJSON(
     bloghost + "/zb_users/plugin/Draft_box/main.php?act=del&id=" + id,
-    function(data) {
+    function (data) {
       // console.log(data);
       $("#dra" + id + " .td15").html("已删除");
     }
