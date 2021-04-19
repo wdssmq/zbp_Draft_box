@@ -54,8 +54,8 @@ function fnAutoSave() {
       var time = new Date().Format("yyyy-MM-dd hh:mm:ss");
       $("#lasttime").html(
         '上一次保存时间: <a href="javascript:void(0)" onclick="Draft_box_list_slide()" >' +
-          time +
-          "</a>"
+        time +
+        "</a>"
       );
     },
     "json"
@@ -146,15 +146,16 @@ function Draft_box_list_slide() {
 
 function Draft_box_list(page) {
   $domDraft = $("#DraftList");
-  //现实应酬
-  var b = arguments[0] ? arguments[0] : 1;
-  var c = page + 1;
+  const curPage = arguments[0] ? arguments[0] : 1;
+  const nextPage = curPage + 1;
+  // console.log(curPage, nextPage);
   $.getJSON(
-    bloghost + "zb_users/plugin/Draft_box/main.php?act=list&page=" + b,
+    bloghost + "zb_users/plugin/Draft_box/main.php?act=list&page=" + curPage,
     function (data) {
+      // console.log(data);
       var str =
         '<p class="editinputname">自动保存的草稿(每页15条)：<button class="dra-btn page" type="button" onclick="Draft_box_list(' +
-        c +
+        nextPage +
         ')">下一页</button>&nbsp;&nbsp;&nbsp;<button onclick="$domDraft.fadeOut();return false;">关闭</button></p><table style="width: 100%;"><tr><td>时间</td><td>文章标题</td><td>内容</td><td>操作</td></tr>';
       $.each(data, function (i, v) {
         str +=
@@ -185,6 +186,7 @@ function Draft_box_list(page) {
           '/zb_system/image/admin/delete.png" alt="删除" title="删除" width="16"></a></td></tr>';
       });
       str += "</table>";
+      // console.log(str);
       $domDraft.html(str);
       if (data.length === 0) {
         $(".dra-btn.page").text("已经是最后一页").attr("disabled", "disabled");
@@ -196,7 +198,6 @@ function Draft_box_list(page) {
 }
 
 function Draft_box_get(id) {
-  //alert('xss1');
   $.getJSON(
     bloghost + "/zb_users/plugin/Draft_box/main.php?act=get&id=" + id,
     function (data) {

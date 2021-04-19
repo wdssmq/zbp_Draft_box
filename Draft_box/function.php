@@ -22,12 +22,12 @@ function Draft_box_list()
     $array2             = array();
     $array2['ID']       = $a['ID'];
     $array2['PostTime'] = $a['PostTime'];
-    $array2['Title']    = strlen($a['Title']) <= 24 ? urlencode($a['Title']) : urlencode(SubStrUTF8($a['Title'], 24) . '...');
-    $tempcontent        = TransferHTML($a['Content'], '[nohtml]');
-    $array2['Content']  = strlen($tempcontent) <= 40 ? urlencode($tempcontent) : urlencode(SubStrUTF8($tempcontent,40)) . '...';
+    $array2['Title']    = strlen($a['Title']) <= 24 ? $a['Title'] : SubStrUTF8($a['Title'], 24) . '...';
+    $tempcontent        = FormatString($a['Content'], '[nohtml][noenter]');
+    $array2['Content']  = strlen($tempcontent) <= 40 ? $tempcontent : SubStrUTF8($tempcontent, 40) . '...';
     $list[]             = $array2;
   }
-  echo urldecode(json_encode($list));
+  echo json_encode($list);
 }
 function Draft_box_get()
 {
@@ -168,13 +168,13 @@ function SavePost_from_Arr($article)
     if (!array_key_exists($key, $article))
       $article[$key] = '';
     if ($value[1] == 'boolean') {
-      $keyvalue[$value[0]] = (integer) $article[$key];
+      $keyvalue[$value[0]] = (int) $article[$key];
     } elseif ($value[1] == 'integer') {
-      $keyvalue[$value[0]] = (integer) $article[$key];
+      $keyvalue[$value[0]] = (int) $article[$key];
     } elseif ($value[1] == 'float') {
       $keyvalue[$value[0]] = (float) $article[$key];
     } elseif ($value[1] == 'double') {
-      $keyvalue[$value[0]] = (double) $article[$key];
+      $keyvalue[$value[0]] = (float) $article[$key];
     } elseif ($value[1] == 'string') {
       $keyvalue[$value[0]] = $article[$key];
     } else {
@@ -224,10 +224,12 @@ function Get_Draft_list($select = null, $where = null, $order = null, $limit = n
     foreach ($GLOBALS['datainfo']['plugin_Draft_box'] as $key => $value) {
       if (!is_array($value) || count($value) != 4)
         continue;
+      if (HasNameInString("log_CreateTime|log_UpdateTime", $value[0]))
+        continue;
       $l[$key] = $a[$value[0]];
       //echo $a[$value[0]];
     }
-    $l['PostTime'] = date("Y-m-d H:i:s", $l['PostTime']);
+    $l['PostTime'] = date("m-d H:i", $l['PostTime']);
     $list[]        = $l;
   }
   return $list;
