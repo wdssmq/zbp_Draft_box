@@ -46,12 +46,11 @@ function fnAutoSave() {
       Template: $("#cmbTemplate").val(),
     },
     function (data) {
-      //var data =$.parsejson(data);
-      if (data.id == 0) {
+      console.log(data);
+      if (data['log_ID'] == 0) {
         return;
       }
-
-      var time = new Date().Format("yyyy-MM-dd hh:mm:ss");
+      const time = new Date().Format("yyyy-MM-dd hh:mm:ss");
       $("#lasttime").html(
         '上一次保存时间: <a href="javascript:void(0)" onclick="Draft_box_list_slide()" >' +
         time +
@@ -87,7 +86,7 @@ function count() {
 
 setTimeout(() => {
   count();
-}, 1300);
+}, 1000);
 
 function fnHashVal(string) {
   let hash = 0,

@@ -13,7 +13,7 @@ if (!$zbp->CheckPlugin('Draft_box')) {
 }
 require 'function.php';
 $Draft_box_action = GetVars('act', 'GET');
-header('Content-Type:application/json; charset=utf-8');
+// header('Content-Type:application/json; charset=utf-8');
 switch ($Draft_box_action) {
   case 'list':
     Draft_box_list();

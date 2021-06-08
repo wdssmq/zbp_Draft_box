@@ -46,7 +46,6 @@ function InstallPlugin_Draft_box()
 function UninstallPlugin_Draft_box()
 {
   global $zbp;
-  return;
   if ($zbp->db->ExistTable($GLOBALS['table']['plugin_Draft_box'])) {
     $s = $zbp->db->sql->DelTable($GLOBALS['table']['plugin_Draft_box']);
     $zbp->db->QueryMulit($s);

@@ -78,26 +78,13 @@ function Draft_box_post()
   if (isset($_POST['Alias'])) {
     $_POST['Alias'] = TransferHTML($_POST['Alias'], '[noscript]');
   }
-  $temotime          = time();
-  $_POST['PostTime'] = $temotime;
+  $curTime          = time();
+  $_POST['PostTime'] = $curTime;
   if (!$zbp->CheckRights('ArticleAll')) {
     unset($_POST['IsTop']);
   }
-  $article0 = new Post(); //array();
   $article  = array();
-  if (GetVars('ID', 'POST') == 0) {
-    if (!$zbp->CheckRights('ArticlePub')) {
-      $_POST['Status'] = ZC_POST_STATUS_AUDITING;
-    }
-  } else {
-    $article0->LoadInfoByID(GetVars('ID', 'POST'));
-    if (($article0->AuthorID != $zbp->user->ID) && (!$zbp->CheckRights('ArticleAll'))) {
-      $zbp->ShowError(6, __FILE__, __LINE__);
-    }
-    if ((!$zbp->CheckRights('ArticlePub')) && ($article0->Status == ZC_POST_STATUS_AUDITING)) {
-      $_POST['Status'] = ZC_POST_STATUS_AUDITING;
-    }
-  }
+
   foreach ($GLOBALS['datainfo']['plugin_Draft_box'] as $key => $value) {
     if ($key == 'ID' || $key == 'Meta') {
       continue;
@@ -109,16 +96,9 @@ function Draft_box_post()
   $article['ID']   = 0;
   $article['Type'] = ZC_POST_TYPE_ARTICLE;
   FilterPost_from_Arr($article);
-  SavePost_from_Arr($article);
-  $array = Get_Draft_list('*', array(), array(
-    'log_PostTime' => 'DESC'
-  ), 1, '', false);
-  if ($array[0]['PostTime'] = $temotime) {
-    $tempid = $array[0]['ID'];
-  } else {
-    $tempid = 0;
-  }
-  echo '{  "id":   "' . $tempid . '" }';
+  $logID = SavePost_from_Arr($article);
+  $rltData = array("log_ID" => $logID);
+  echo json_encode($rltData);
 }
 function Draft_box_del()
 {
@@ -182,25 +162,11 @@ function SavePost_from_Arr($article)
     }
   }
   array_shift($keyvalue);
-  $id_field = reset($GLOBALS['datainfo']['plugin_Draft_box']);
-  $id_name  = key($GLOBALS['datainfo']['plugin_Draft_box']);
-  $id_field = $id_field[0];
-  if ($article['ID'] == 0) {
-    $sql = $zbp->db->sql->Insert($GLOBALS['table']['plugin_Draft_box'], $keyvalue);
-    //大于60条删除，删除以前的记录
-    Draft_Auto_del();
-    $article['ID'] = $zbp->db->Insert($sql);
-  } else {
-    $sql = $zbp->db->sql->Update($GLOBALS['table']['plugin_Draft_box'], $keyvalue, array(
-      array(
-        '=',
-        $id_field,
-        $article['ID']
-      )
-    ));
-    Draft_Auto_del();
-    return $zbp->db->Update($sql);
-  }
+  $sql = $zbp->db->sql->Insert($GLOBALS['table']['plugin_Draft_box'], $keyvalue);
+  $logID = $zbp->db->Insert($sql);
+  //大于60条删除，删除以前的记录
+  Draft_Auto_del();
+  return $logID;
 }
 function Get_Draft_list($select = null, $where = null, $order = null, $limit = null, $option = null)
 {
