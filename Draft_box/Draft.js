@@ -113,9 +113,10 @@ function fnCurHash() {
   return fnHashVal(body + other);
 }
 
+// eslint-disable-next-line no-unused-vars
 function Draft_box_list_slide() {
   // $domDraft.slideToggle();
-  $domDraft = $("#DraftList");
+  const $domDraft = $("#DraftList");
   Draft_box_list(1);
   if ($domDraft.is(":hidden")) {
     $domDraft
@@ -144,7 +145,7 @@ function Draft_box_list_slide() {
 }
 
 function Draft_box_list(page) {
-  $domDraft = $("#DraftList");
+  const $domDraft = $("#DraftList");
   const curPage = arguments[0] ? arguments[0] : 1;
   const nextPage = curPage + 1;
   // console.log(curPage, nextPage);
@@ -196,6 +197,7 @@ function Draft_box_list(page) {
   return false;
 }
 
+// eslint-disable-next-line no-unused-vars
 function Draft_box_get(id) {
   $.getJSON(
     bloghost + "/zb_users/plugin/Draft_box/main.php?act=get&id=" + id,
@@ -217,12 +219,13 @@ function Draft_box_get(id) {
       $("#editor_intro").val(data.Intro);
       editor_api.editor.content.put(data.Content);
       loop = start;
-      $domDraft = $("#DraftList");
+      const $domDraft = $("#DraftList");
       $domDraft.fadeOut();
     },
   );
 }
 
+// eslint-disable-next-line no-unused-vars
 function Draft_box_del(id) {
   $.getJSON(
     bloghost + "/zb_users/plugin/Draft_box/main.php?act=del&id=" + id,
