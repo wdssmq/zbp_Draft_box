@@ -1,4 +1,4 @@
-Date.prototype.Format = function (fmt) {
+Date.prototype.Format = function(fmt) {
   // author: meizz
   var o = {
     "M+": this.getMonth() + 1, // 月份
@@ -45,7 +45,7 @@ function fnAutoSave() {
       PostTime: $("#edtDateTime").val(),
       Template: $("#cmbTemplate").val(),
     },
-    function (data) {
+    function(data) {
       console.log(data);
       if (data["log_ID"] == 0) {
         return;
@@ -151,13 +151,13 @@ function Draft_box_list(page) {
   // console.log(curPage, nextPage);
   $.getJSON(
     bloghost + "zb_users/plugin/Draft_box/main.php?act=list&page=" + curPage,
-    function (data) {
+    function(data) {
       // console.log(data);
       var str =
         "<p class=\"editinputname\">自动保存的草稿(每页15条)：<button class=\"dra-btn page\" type=\"button\" onclick=\"Draft_box_list(" +
         nextPage +
         ")\">下一页</button>&nbsp;&nbsp;&nbsp;<button onclick=\"$domDraft.fadeOut();return false;\">关闭</button></p><table style=\"width: 100%;\"><tr><td>时间</td><td>文章标题</td><td>内容</td><td>操作</td></tr>";
-      $.each(data, function (i, v) {
+      $.each(data, function(i, v) {
         str +=
           "<tr id=\"dra" +
           v.ID +
@@ -201,7 +201,7 @@ function Draft_box_list(page) {
 function Draft_box_get(id) {
   $.getJSON(
     bloghost + "/zb_users/plugin/Draft_box/main.php?act=get&id=" + id,
-    function (data) {
+    function(data) {
       $("#edtType").val(data.Type);
       $("#edtTitle").val(data.Title);
       $("#editor_content").val(data.Content);
@@ -229,7 +229,7 @@ function Draft_box_get(id) {
 function Draft_box_del(id) {
   $.getJSON(
     bloghost + "/zb_users/plugin/Draft_box/main.php?act=del&id=" + id,
-    function (data) {
+    function(data) {
       // console.log(data);
       $("#dra" + id + " .td15").html("已删除");
     },
