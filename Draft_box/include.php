@@ -2,7 +2,7 @@
 if (!isset($zbp)) {
   exit;
 }
-#注册插件
+
 RegisterPlugin("Draft_box", "ActivePlugin_Draft_box");
 
 $GLOBALS['table']['plugin_Draft_box'] = '%pre%plugin_draft_box';
@@ -17,12 +17,12 @@ function ActivePlugin_Draft_box()
 function Draft_box_Main()
 {
   global $zbp;
-  echo <<<jj
+  echo <<<HTML
   <div><span id="autosavetime">60</span> 秒后保存修改至
   <a onclick="Draft_box_list_slide()" href="javascript:void(0)"  id="Draft_box" >草稿箱</a></div>
   <div id="lasttime">上次保存时间: 无</div>
   <script src="{$zbp->host}zb_users/plugin/Draft_box/Draft.js" type="text/javascript"></script>
-jj;
+HTML;
 }
 
 function Draft_box_txt()
